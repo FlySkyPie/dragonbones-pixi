@@ -1,25 +1,3 @@
-/**
- * The MIT License (MIT)
- *
- * Copyright (c) 2012-2018 DragonBones team and other contributors
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 import * as PIXI from 'pixi.js'
 import {
     Animation, Armature, DragonBones,
@@ -36,7 +14,7 @@ export class PixiArmatureDisplay extends PIXI.Sprite implements IArmatureProxy {
     public debugDraw: boolean = false;
     private _debugDraw: boolean = false;
     // private _disposeProxy: boolean = false;
-    private _armature: Armature | null = null;
+    private _armature: Armature = null as any;
     private _debugDrawer: PIXI.Sprite | null = null;
     /**
      * @inheritDoc
@@ -49,7 +27,7 @@ export class PixiArmatureDisplay extends PIXI.Sprite implements IArmatureProxy {
      */
     public dbClear(): void {
         if (this._debugDrawer !== null) {
-            this._debugDrawer.destroy({ children: true, texture: true, baseTexture: true })
+            this._debugDrawer.destroy(true);
         }
 
         this._armature = null as any;
@@ -66,7 +44,7 @@ export class PixiArmatureDisplay extends PIXI.Sprite implements IArmatureProxy {
             this._debugDraw = drawed;
             if (this._debugDraw) {
                 if (this._debugDrawer === null) {
-                    this._debugDrawer = new PIXI.Sprite(PIXI.Texture.EMPTY);
+                    this._debugDrawer = new PIXI.Sprite();
                     const boneDrawer = new PIXI.Graphics();
                     this._debugDrawer.addChild(boneDrawer);
                 }
@@ -74,10 +52,6 @@ export class PixiArmatureDisplay extends PIXI.Sprite implements IArmatureProxy {
                 this.addChild(this._debugDrawer);
                 const boneDrawer = this._debugDrawer.getChildAt(0) as PIXI.Graphics;
                 boneDrawer.clear();
-
-                if (this._armature === null) {
-                    throw new Error(`this._armature is null.`);
-                }
 
                 const bones = this._armature.getBones();
                 for (let i = 0, l = bones.length; i < l; ++i) {
@@ -190,15 +164,13 @@ export class PixiArmatureDisplay extends PIXI.Sprite implements IArmatureProxy {
      * @private
      */
     public dispatchDBEvent(type: EventStringType, eventObject: EventObject): void {
-        this.emit(type as any, eventObject);
+        this.emit(type, eventObject);
     }
     /**
      * @inheritDoc
      */
     public hasDBEventListener(type: EventStringType): boolean {
-        return this.listenerCount(type as any) > 0;
-
-
+        return this.listeners(type, true) as boolean; // .d.ts bug
     }
     /**
      * @inheritDoc
@@ -216,21 +188,12 @@ export class PixiArmatureDisplay extends PIXI.Sprite implements IArmatureProxy {
      * @inheritDoc
      */
     public get armature(): Armature {
-        if (this._armature === null) {
-            throw new Error(`this._armature is null.`);
-        }
-
         return this._armature;
     }
     /**
      * @inheritDoc
      */
     public get animation(): Animation {
-        if (this._armature === null) {
-            throw new Error(`this._armature is null.`);
-        }
-
         return this._armature.animation;
     }
 }
-

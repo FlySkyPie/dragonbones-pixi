@@ -1,25 +1,3 @@
-/**
- * The MIT License (MIT)
- *
- * Copyright (c) 2012-2018 DragonBones team and other contributors
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 import * as PIXI from 'pixi.js'
 
 import {
@@ -82,7 +60,7 @@ export class PixiSlot extends Slot {
         if (this._renderDisplay === null) {
             throw new Error(`this._renderDisplay is null.`);
         }
-
+        
         const container = this._armature.display as PixiArmatureDisplay;
         container.addChild(this._renderDisplay);
     }
@@ -198,7 +176,7 @@ export class PixiSlot extends Slot {
         const alpha = this._colorTransform.alphaMultiplier * this._globalAlpha;
         this._renderDisplay.alpha = alpha;
 
-        if (this._renderDisplay instanceof PIXI.Sprite || this._renderDisplay instanceof PIXI.SimpleMesh) {
+        if (this._renderDisplay instanceof PIXI.Sprite || this._renderDisplay instanceof PIXI.mesh.Mesh) {
             const color = (Math.round(this._colorTransform.redMultiplier * 0xFF) << 16) + (Math.round(this._colorTransform.greenMultiplier * 0xFF) << 8) + Math.round(this._colorTransform.blueMultiplier * 0xFF);
             this._renderDisplay.tint = color;
         }
@@ -256,7 +234,7 @@ export class PixiSlot extends Slot {
                     let vertexOffset = intArray[this._geometryData.offset + BinaryOffset.GeometryFloatOffset];
 
                     if (vertexOffset < 0) {
-                        vertexOffset += 65536; // Fixed out of bouds bug.
+                        vertexOffset += 65536; // Fixed out of bouds bug. 
                     }
 
                     const uvOffset = vertexOffset + vertexCount * 2;
@@ -268,23 +246,24 @@ export class PixiSlot extends Slot {
 
                     const scale = this._armature._armatureData.scale;
 
-                    const meshDisplay = this._renderDisplay as PIXI.SimpleMesh;
-
-                    const vertices = new Float32Array(vertexCount * 2) as any;
-                    const uvs = new Float32Array(vertexCount * 2) as any;
-                    const indices = new Uint16Array(triangleCount * 3) as any;
+                    const meshDisplay = this._renderDisplay as PIXI.mesh.Mesh;
+                    const textureAtlasWidth = currentTextureAtlasData.width > 0.0 ? currentTextureAtlasData.width : renderTexture.baseTexture.width;
+                    const textureAtlasHeight = currentTextureAtlasData.height > 0.0 ? currentTextureAtlasData.height : renderTexture.baseTexture.height;
+                    const region = currentTextureData.region;
 
                     if (floatArray === null) {
                         throw new Error(`floatArrayis null.`);
                     }
 
-
+                    meshDisplay.vertices = new Float32Array(vertexCount * 2) as any;
+                    meshDisplay.uvs = new Float32Array(vertexCount * 2) as any;
+                    meshDisplay.indices = new Uint16Array(triangleCount * 3) as any;
                     for (let i = 0, l = vertexCount * 2; i < l; ++i) {
-                        vertices[i] = floatArray[vertexOffset + i] * scale;
+                        meshDisplay.vertices[i] = floatArray[vertexOffset + i] * scale;
                     }
 
                     for (let i = 0; i < triangleCount * 3; ++i) {
-                        indices[i] = intArray[this._geometryData.offset + BinaryOffset.GeometryVertexIndices + i];
+                        meshDisplay.indices[i] = intArray[this._geometryData.offset + BinaryOffset.GeometryVertexIndices + i];
                     }
 
                     for (let i = 0, l = vertexCount * 2; i < l; i += 2) {
@@ -292,19 +271,19 @@ export class PixiSlot extends Slot {
                         const v = floatArray[uvOffset + i + 1];
 
                         if (currentTextureData.rotated) {
-                            uvs[i] = 1 - v;
-                            uvs[i + 1] = u;
-                        } else {
-                            uvs[i] = u;
-                            uvs[i + 1] = v;
+                            meshDisplay.uvs[i] = (region.x + (1.0 - v) * region.width) / textureAtlasWidth;
+                            meshDisplay.uvs[i + 1] = (region.y + u * region.height) / textureAtlasHeight;
+                        }
+                        else {
+                            meshDisplay.uvs[i] = (region.x + u * region.width) / textureAtlasWidth;
+                            meshDisplay.uvs[i + 1] = (region.y + v * region.height) / textureAtlasHeight;
                         }
                     }
 
                     this._textureScale = 1.0;
                     meshDisplay.texture = renderTexture as any;
-                    meshDisplay.vertices = vertices;
-                    meshDisplay.uvBuffer.update(uvs);
-                    meshDisplay.geometry.addIndex(indices);
+                    meshDisplay.dirty++;
+                    meshDisplay.indexDirty++;
 
                     if (this._parent === null) {
                         throw new Error(`this._parentis null.`);
@@ -320,7 +299,7 @@ export class PixiSlot extends Slot {
                         this._identityTransform();
                     }
                 }
-                else {
+                else { // Normal texture.
                     if (currentTextureData.parent === null) {
                         throw new Error(`currentTextureData.parentis null.`);
                     }
@@ -328,8 +307,7 @@ export class PixiSlot extends Slot {
                     if (this._armature._armatureData === null) {
                         throw new Error(`this._armature._armatureData null.`);
                     }
-
-                    // Normal texture.
+                    
                     this._textureScale = currentTextureData.parent.scale * this._armature._armatureData.scale;
                     const normalDisplay = this._renderDisplay as PIXI.Sprite;
                     normalDisplay.texture = renderTexture;
@@ -342,7 +320,7 @@ export class PixiSlot extends Slot {
         }
 
         if (this._geometryData !== null) {
-            const meshDisplay = this._renderDisplay as PIXI.SimpleMesh;
+            const meshDisplay = this._renderDisplay as PIXI.mesh.Mesh;
             meshDisplay.texture = null as any;
             meshDisplay.x = 0.0;
             meshDisplay.y = 0.0;
@@ -373,7 +351,7 @@ export class PixiSlot extends Slot {
         const weightData = geometryData.weight;
 
         const hasDeform = deformVertices.length > 0 && geometryData.inheritDeform;
-        const meshDisplay = this._renderDisplay as PIXI.SimpleMesh;
+        const meshDisplay = this._renderDisplay as PIXI.mesh.Mesh;
 
         if (weightData !== null) {
             const data = geometryData.data;
@@ -392,7 +370,7 @@ export class PixiSlot extends Slot {
             let weightFloatOffset = intArray[weightData.offset + BinaryOffset.WeigthFloatOffset];
 
             if (weightFloatOffset < 0) {
-                weightFloatOffset += 65536; // Fixed out of bouds bug.
+                weightFloatOffset += 65536; // Fixed out of bouds bug. 
             }
 
             for (
@@ -458,7 +436,7 @@ export class PixiSlot extends Slot {
             let vertexOffset = intArray[geometryData.offset + BinaryOffset.GeometryFloatOffset];
 
             if (vertexOffset < 0) {
-                vertexOffset += 65536; // Fixed out of bouds bug.
+                vertexOffset += 65536; // Fixed out of bouds bug. 
             }
 
             if (floatArray === null) {
@@ -502,9 +480,6 @@ export class PixiSlot extends Slot {
         if (this._renderDisplay === this._rawDisplay || this._renderDisplay === this._meshDisplay) {
             const x = transform.x - (this.globalTransformMatrix.a * this._pivotX + this.globalTransformMatrix.c * this._pivotY);
             const y = transform.y - (this.globalTransformMatrix.b * this._pivotX + this.globalTransformMatrix.d * this._pivotY);
-
-
-
             this._renderDisplay.setTransform(
                 x, y,
                 transform.scaleX * this._textureScale, transform.scaleY * this._textureScale,
@@ -555,4 +530,3 @@ export class PixiSlot extends Slot {
         this._renderDisplay.setTransform(0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0);
     }
 }
-

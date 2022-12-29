@@ -1,25 +1,3 @@
-/**
- * The MIT License (MIT)
- *
- * Copyright (c) 2012-2018 DragonBones team and other contributors
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 import * as PIXI from 'pixi.js'
 import {
     Armature, BaseFactory, BaseObject, BuildArmaturePackage, DataParser, DragonBones, Slot, SlotData
@@ -28,7 +6,6 @@ import {
 import { PixiArmatureDisplay } from './PixiArmatureDisplay';
 import { PixiTextureAtlasData, PixiTextureData } from './PixiTextureAtlasData';
 import { PixiSlot } from './PixiSlot';
-
 
 /**
  * - The PixiJS factory.
@@ -44,21 +21,8 @@ export class PixiFactory extends BaseFactory {
     private static _dragonBonesInstance: DragonBones = null as any;
     private static _factory: PixiFactory = null as any;
     private static _clockHandler(passedTime: number): void {
-        this._dragonBonesInstance.advanceTime((passedTime / PIXI.settings.TARGET_FPMS!) * 0.001);
+        this._dragonBonesInstance.advanceTime(PIXI.ticker.shared.elapsedMS * passedTime * 0.001);
     }
-
-    /*
-     * `passedTime` is elapsed time, specified in seconds.
-     */
-    public static advanceTime(passedTime: number): void {
-        this._dragonBonesInstance.advanceTime(passedTime);
-    }
-
-    /*
-    * whether use `PIXI.Ticker.shared`
-    */
-    public static useSharedTicker: boolean = true;
-
     /**
      * - A global factory instance that can be used directly.
      * @version DragonBones 4.7
@@ -71,20 +35,7 @@ export class PixiFactory extends BaseFactory {
      */
     public static get factory(): PixiFactory {
         if (PixiFactory._factory === null) {
-            PixiFactory._factory = new PixiFactory(null, PixiFactory.useSharedTicker);
-        }
-
-        return PixiFactory._factory;
-    }
-
-    /**
-     * - 一个获取全局工厂实例(单例)的方法, 和get factory相比, 优点是可以传参数。
-     * @version DragonBones 4.7
-     * @language zh_CN
-     */
-    public static newInstance(useSharedTicker = true): PixiFactory {
-        if (PixiFactory._factory === null) {
-            PixiFactory._factory = new PixiFactory(null, useSharedTicker);
+            PixiFactory._factory = new PixiFactory();
         }
 
         return PixiFactory._factory;
@@ -92,15 +43,13 @@ export class PixiFactory extends BaseFactory {
     /**
      * @inheritDoc
      */
-    public constructor(dataParser: DataParser | null = null, useSharedTicker = true) {
+    public constructor(dataParser: DataParser | null = null) {
         super(dataParser);
 
         if (PixiFactory._dragonBonesInstance === null) {
-            const eventManager = new PixiArmatureDisplay(PIXI.Texture.EMPTY);
+            const eventManager = new PixiArmatureDisplay();
             PixiFactory._dragonBonesInstance = new DragonBones(eventManager);
-            if (useSharedTicker) {
-                PIXI.Ticker.shared.add(PixiFactory._clockHandler, PixiFactory);
-            }
+            PIXI.ticker.shared.add(PixiFactory._clockHandler, PixiFactory);
         }
 
         this._dragonBones = PixiFactory._dragonBonesInstance;
@@ -119,8 +68,7 @@ export class PixiFactory extends BaseFactory {
 
     protected _buildArmature(dataPackage: BuildArmaturePackage): Armature {
         const armature = BaseObject.borrowObject(Armature);
-        const armatureDisplay = new PixiArmatureDisplay(PIXI.Texture.EMPTY);
-
+        const armatureDisplay = new PixiArmatureDisplay();
 
         if (dataPackage.armature === null) {
             throw new Error(`dataPackage.armature is null.`);
@@ -142,7 +90,7 @@ export class PixiFactory extends BaseFactory {
         const slot = BaseObject.borrowObject(PixiSlot);
         slot.init(
             slotData, armature,
-            new PIXI.Sprite(PIXI.Texture.EMPTY), new PIXI.SimpleMesh()
+            new PIXI.Sprite(), new PIXI.mesh.Mesh(null as any, null as any, null as any, null as any, PIXI.mesh.Mesh.DRAW_MODES.TRIANGLES)
         );
 
         return slot;
@@ -182,7 +130,11 @@ export class PixiFactory extends BaseFactory {
     public buildArmatureDisplay(armatureName: string, dragonBonesName: string = "", skinName: string = "", textureAtlasName: string = ""): PixiArmatureDisplay | null {
         const armature = this.buildArmature(armatureName, dragonBonesName || "", skinName || "", textureAtlasName || "");
         if (armature !== null) {
-            this._dragonBones?.clock.add(armature);
+            if (this._dragonBones === null) {
+                throw new Error(`this._dragonBones is null.`);
+            }
+
+            this._dragonBones.clock.add(armature);
 
             return armature.display as PixiArmatureDisplay;
         }
@@ -227,7 +179,7 @@ export class PixiFactory extends BaseFactory {
         if (this._dragonBones === null) {
             throw new Error(`this._dragonBones is null.`);
         }
+
         return this._dragonBones.eventManager as PixiArmatureDisplay;
     }
 }
-

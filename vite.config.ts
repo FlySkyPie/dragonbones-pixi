@@ -5,17 +5,22 @@ import dts from 'vite-plugin-dts'
 export default defineConfig({
   resolve: {
     alias: {
-      "@dragonbones-phaser": path.resolve(__dirname, "./src"),
+      "@dragonbones-pixi": path.resolve(__dirname, "./src"),
     },
   },
   build: {
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'dragonBonesPhaser',
+      name: 'dragonBonesPixi',
       formats: ['es'],
-      fileName: 'dragonbones-phaser',
+      fileName: 'dragonbones-pixi',
     },
   },
   plugins: [dts()],
+  define: {
+    // By default, Vite doesn't include shims for NodeJS/
+    // necessary for segment analytics lib to work
+    global: {},
+  },
 });
