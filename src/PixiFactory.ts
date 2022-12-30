@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import {
     Armature, BaseFactory, BaseObject, BuildArmaturePackage, DataParser, DragonBones, Slot, SlotData
-} from "dragonbones-js";
+} from "@flyskypie/dragonbones-js";
 
 import { PixiArmatureDisplay } from './PixiArmatureDisplay';
 import { PixiTextureAtlasData, PixiTextureData } from './PixiTextureAtlasData';

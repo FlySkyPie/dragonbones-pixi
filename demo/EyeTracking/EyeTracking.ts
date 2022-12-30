@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js'
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
-import { Bone, OffsetMode } from "dragonbones-js";
 
 import { BaseDemo } from "../BaseDemo";
 
@@ -159,4 +158,4 @@ class EyeTracking extends BaseDemo {
     }
 }
 
-const _ = new EyeTracking();
+new EyeTracking();

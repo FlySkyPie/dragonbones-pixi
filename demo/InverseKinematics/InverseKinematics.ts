@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
+import { AnimationState, Bone, Transform } from "@flyskypie/dragonbones-js";
+
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
-import { AnimationState, Bone, OffsetMode, Transform } from "dragonbones-js";
 
 import { BaseDemo } from "../BaseDemo";
 import { DragHelper } from '../DragHelper';
@@ -196,4 +197,4 @@ class InverseKinematics extends BaseDemo {
     }
 }
 
-const _ = new InverseKinematics();
+new InverseKinematics();

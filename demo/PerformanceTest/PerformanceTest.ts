@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
+import { BaseObject, } from "@flyskypie/dragonbones-js";
+
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
-import { BaseObject, Bone, OffsetMode } from "dragonbones-js";
 
 import { BaseDemo } from "../BaseDemo";
 
@@ -106,7 +107,7 @@ class PerformanceTest extends BaseDemo {
         if (armatureDisplay === undefined) {
             throw new Error(`armatureDisplay is undefined.`);
         }
-        
+
         this.removeChild(armatureDisplay);
         armatureDisplay.dispose();
 
@@ -152,4 +153,4 @@ class PerformanceTest extends BaseDemo {
     }
 }
 
-const _ = new PerformanceTest();
+new PerformanceTest();

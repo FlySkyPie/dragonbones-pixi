@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import {
     Animation, Armature, DragonBones,
     EventObject, EventStringType, IArmatureProxy, BoundingBoxType, PolygonBoundingBoxData
-} from 'dragonbones-js';
+} from '@flyskypie/dragonbones-js';
 
 /**
  * @inheritDoc

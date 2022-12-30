@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 
 import {
     BaseObject, BinaryOffset, BlendMode, BoneType, DisplayFrame, GeometryData, Slot, Surface
-} from "dragonbones-js";
+} from "@flyskypie/dragonbones-js";
 import { PixiArmatureDisplay } from './PixiArmatureDisplay';
 import { PixiTextureAtlasData, PixiTextureData } from './PixiTextureAtlasData';
 

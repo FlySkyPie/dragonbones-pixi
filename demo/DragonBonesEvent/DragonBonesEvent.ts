@@ -1,5 +1,6 @@
+import { EventObject } from "@flyskypie/dragonbones-js";
+
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
-import { EventObject } from "dragonbones-js";
 
 import { BaseDemo } from "../BaseDemo";
 
@@ -68,4 +69,4 @@ class DragonBonesEvent extends BaseDemo {
     }
 }
 
-const _ = new DragonBonesEvent();
+new DragonBonesEvent();

@@ -1,6 +1,4 @@
-import * as PIXI from 'pixi.js'
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
-import { Bone, OffsetMode } from "dragonbones-js";
 
 import { BaseDemo } from "../BaseDemo";
 
@@ -116,4 +114,4 @@ class ReplaceAnimation extends BaseDemo {
     }
 }
 
-const _ = new ReplaceAnimation();
+new ReplaceAnimation();

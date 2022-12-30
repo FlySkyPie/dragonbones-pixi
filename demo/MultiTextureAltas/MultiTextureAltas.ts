@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
+
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
-import { Bone, OffsetMode } from "dragonbones-js";
 
 import { BaseDemo } from "../BaseDemo";
 
@@ -112,4 +112,4 @@ class MultiTextureAltas extends BaseDemo {
     }
 }
 
-const _ = new MultiTextureAltas();
+new MultiTextureAltas();

@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
+import { Bone, OffsetMode } from "@flyskypie/dragonbones-js";
+
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
-import { Bone, OffsetMode } from "dragonbones-js";
 
 import { BaseDemo } from "../BaseDemo";
 import { DragHelper } from "../DragHelper";
@@ -230,4 +231,4 @@ class BoundingBox extends BaseDemo {
     }
 }
 
-const _ = new BoundingBox();
+new BoundingBox();

@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { BaseObject, TextureAtlasData, TextureData } from 'dragonbones-js';
+import { BaseObject, TextureAtlasData, TextureData } from '@flyskypie/dragonbones-js';
 
 /**
  * - The PixiJS texture atlas data.

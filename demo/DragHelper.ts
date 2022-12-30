@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { OffsetMode } from 'dragonbones-js';
+import { OffsetMode } from '@flyskypie/dragonbones-js';
 
 import { PixiArmatureDisplay } from '@dragonbones-pixi';
 

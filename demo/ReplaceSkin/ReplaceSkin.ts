@@ -1,6 +1,6 @@
-import * as PIXI from 'pixi.js'
+import { EventObject, } from "@flyskypie/dragonbones-js";
+
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
-import { Bone, EventObject, OffsetMode } from "dragonbones-js";
 
 import { BaseDemo } from "../BaseDemo";
 
@@ -176,4 +176,4 @@ class ReplaceSkin extends BaseDemo {
     }
 }
 
-const _ = new ReplaceSkin();
+new ReplaceSkin();

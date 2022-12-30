@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
+import { AnimationState, Armature, EventObject, } from "@flyskypie/dragonbones-js";
+
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
-import { AnimationState, Armature, Bone, EventObject, OffsetMode } from "dragonbones-js";
 
 import { BaseDemo } from "../BaseDemo";
 
@@ -142,7 +143,7 @@ class Game extends BaseDemo {
         if (this._player === null) {
             throw new Error(`this._player is null.`);
         }
-        
+
         if (this._left && this._right) {
             this._player.move(dir);
         }
@@ -187,8 +188,8 @@ class Mecha {
     private _aimRadian: number = 0.0;
     private _speedX: number = 0.0;
     private _speedY: number = 0.0;
-    private _armature: Armature| null = null;
-    private _armatureDisplay: ArmatureDisplayType| null = null;
+    private _armature: Armature | null = null;
+    private _armatureDisplay: ArmatureDisplayType | null = null;
     private _weaponL: Armature | null = null;
     private _weaponR: Armature | null = null;
     private _aimState: AnimationState | null = null;
@@ -587,4 +588,4 @@ class Bullet {
     }
 }
 
-const _ = new Game();
+new Game();

@@ -1,6 +1,4 @@
-import * as PIXI from 'pixi.js'
-import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
-import { Bone, OffsetMode } from "dragonbones-js";
+import { PixiFactory } from "@dragonbones-pixi";
 
 import { BaseDemo } from "../BaseDemo";
 
@@ -53,4 +51,4 @@ class HelloDragonBones extends BaseDemo {
     }
 }
 
-const _ = new HelloDragonBones();
+new HelloDragonBones();
