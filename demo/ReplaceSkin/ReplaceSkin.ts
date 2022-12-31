@@ -2,9 +2,14 @@ import { EventObject, } from "@flyskypie/dragonbones-js";
 
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
 
-import { BaseDemo } from "../BaseDemo";
+import mechaSkeJson from '../resource/you_xin/body/body_ske.json?url';
+import mechaTexJson from '../resource/you_xin/body/body_tex.json?url';
+import mechaTexPng from '../resource/you_xin/body/body_tex.png';
 
-class ReplaceSkin extends BaseDemo {
+import { BaseDemo } from "../BaseDemo";
+import { resources } from './resource';
+
+export class ReplaceSkin extends BaseDemo {
     private _replaceSuitIndex: number = 0;
     private readonly _factory: PixiFactory = PixiFactory.factory;
     private readonly _suitConfigs: string[][] = [];
@@ -50,43 +55,31 @@ class ReplaceSkin extends BaseDemo {
         ]);
 
         this._resources.push(
-            "/resource/you_xin/body/body_ske.json",
-            "/resource/you_xin/body/body_tex.json",
-            "/resource/you_xin/body/body_tex.png"
+            mechaSkeJson,
+            mechaTexJson,
+            mechaTexPng
         );
 
-        for (let i = 0, l = this._suitConfigs.length; i < l; ++i) {
-            for (const partArmatureName of this._suitConfigs[i]) {
-                // resource/you_xin/suit1/2010600a/xxxxxx
-                const path = "/resource/you_xin/" + "suit" + (i + 1) + "/" + partArmatureName + "/" + partArmatureName;
-                const dragonBonesJSONPath = path + "_ske.json";
-                const textureAtlasJSONPath = path + "_tex.json";
-                const textureAtlasPath = path + "_tex.png";
-                //
-                this._resources.push(
-                    dragonBonesJSONPath,
-                    textureAtlasJSONPath,
-                    textureAtlasPath
-                );
-            }
-        }
+        resources.forEach(({ bonesJSONUrl, textureAtlasUrl, textureUrl }) => {
+            this._resources.push(
+                bonesJSONUrl, textureAtlasUrl, textureUrl
+            );
+        });
     }
 
     protected _onStart(): void {
-        this._factory.parseDragonBonesData(this._pixiResources["/resource/you_xin/body/body_ske.json"].data);
-        this._factory.parseTextureAtlasData(this._pixiResources["/resource/you_xin/body/body_tex.json"].data, this._pixiResources["/resource/you_xin/body/body_tex.png"].texture);
+        this._factory.parseDragonBonesData(this._pixiResources[mechaSkeJson].data);
+        this._factory.parseTextureAtlasData(
+            this._pixiResources[mechaTexJson].data,
+            this._pixiResources[mechaTexPng].texture);
 
-        for (let i = 0, l = this._suitConfigs.length; i < l; ++i) {
-            for (const partArmatureName of this._suitConfigs[i]) {
-                const path = "/resource/you_xin/" + "suit" + (i + 1) + "/" + partArmatureName + "/" + partArmatureName;
-                const dragonBonesJSONPath = path + "_ske.json";
-                const textureAtlasJSONPath = path + "_tex.json";
-                const textureAtlasPath = path + "_tex.png";
-                //
-                this._factory.parseDragonBonesData(this._pixiResources[dragonBonesJSONPath].data);
-                this._factory.parseTextureAtlasData(this._pixiResources[textureAtlasJSONPath].data, this._pixiResources[textureAtlasPath].texture);
-            }
-        }
+        resources.forEach(({ bonesJSONUrl, textureAtlasUrl, textureUrl }) => {
+            this._factory.parseDragonBonesData(this._pixiResources[bonesJSONUrl].data);
+            this._factory.parseTextureAtlasData(
+                this._pixiResources[textureAtlasUrl].data,
+                this._pixiResources[textureUrl].texture);
+        })
+
         //
         this._armatureDisplay = this._factory.buildArmatureDisplay("body");
 
@@ -174,6 +167,6 @@ class ReplaceSkin extends BaseDemo {
         // Remove has been replaced
         this._replaceSuitParts.splice(partIndex, 1);
     }
-}
+};
 
 new ReplaceSkin();

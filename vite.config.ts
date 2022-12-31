@@ -46,6 +46,7 @@ export default defineConfig(({ command, mode }) => {
       },
       build: {
         outDir: path.resolve(__dirname, 'dist-demo'),
+        assetsInlineLimit: 0,
         rollupOptions: {
           input,
         }
