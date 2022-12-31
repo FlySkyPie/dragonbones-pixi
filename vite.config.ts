@@ -35,7 +35,9 @@ export default defineConfig(({ command, mode }) => {
     ].reduce<{ [key: string]: string }>((t, name) => {
       t[name] = path.resolve(__dirname, `demo/${name}/index.html`);
       return t;
-    }, {})
+    }, {
+      main: path.resolve(__dirname, "demo/index.html"),
+    })
 
     return {
       base: '',
