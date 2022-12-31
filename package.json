@@ -1,7 +1,14 @@
 {
   "name": "@flyskypie/dragonbones-pixi",
   "version": "0.1.0",
-  "main": "./dist/dragonbones-pixi",
+  "main": "./dist/dragonbones-pixi.umd.cjs",
+  "module": "./dist/dragonbones-pixi.js",
+  "exports": {
+    ".": {
+      "import": "./dist/dragonbones-pixi.js",
+      "require": "./dist/dragonbones-pixi.umd.cjs"
+    }
+  },
   "types": "./dist/index.d.ts",
   "type": "module",
   "license": "MIT",
@@ -11,9 +18,16 @@
     "package.json",
     "README.md"
   ],
+  "keywords": [
+    "dragonbones",
+    "pixi",
+    "bones",
+    "skeletal animation"
+  ],
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
+    "build:demo": "tsc && vite build --mode demo",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -23,10 +37,10 @@
   "devDependencies": {
     "@types/node": "^18.11.17",
     "@types/pixi.js": "^4.0.0",
+    "pixi.js": "^4.0.0",
     "typescript": "^4.9.3",
     "vite": "^4.0.0",
-    "vite-plugin-dts": "^1.7.1",
-    "pixi.js": "^4.0.0"
+    "vite-plugin-dts": "^1.7.1"
   },
   "peerDependencies": {
     "pixi.js": "^4.0.0"
