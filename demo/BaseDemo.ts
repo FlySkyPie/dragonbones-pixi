@@ -1,24 +1,28 @@
 import * as PIXI from 'pixi.js'
 
+import texPng from './resource/background.png'
+
 export abstract class BaseDemo extends PIXI.Container {
-    private static BACKGROUND_URL: string = "/resource/background.png";
+    private static BACKGROUND_URL: string = texPng;
     protected readonly _renderer = new PIXI.WebGLRenderer(1136, 640);
     protected readonly _background: PIXI.Sprite = new PIXI.Sprite(PIXI.Texture.EMPTY);
     protected readonly _resources: string[] = [];
     protected _pixiResources: { [key: string]: PIXI.loaders.Resource } = {};
 
-    public constructor() {
+    public constructor(autoLoadResources = true) {
         super();
 
         this._renderer.backgroundColor = 0x666666;
         this._resources.push(BaseDemo.BACKGROUND_URL);
         document.body.appendChild(this._renderer.view);
-        //
-        setTimeout(() => {
-            this.x = this.stageWidth * 0.5;
-            this.y = this.stageHeight * 0.5;
-            this._loadResources();
-        }, 10);
+
+        if (autoLoadResources) {
+            setTimeout(() => {
+                this.x = this.stageWidth * 0.5;
+                this.y = this.stageHeight * 0.5;
+                this._loadResources();
+            }, 10);
+        }
     }
 
     protected abstract _onStart(): void;

@@ -2,6 +2,10 @@ import { EventObject } from "@flyskypie/dragonbones-js";
 
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
 
+import skeJson from '../resource/progress_bar/progress_bar_ske.json?url';
+import texJson from '../resource/progress_bar/progress_bar_tex.json?url';
+import texPng from '../resource/progress_bar/progress_bar_tex.png';
+
 import { BaseDemo } from "../BaseDemo";
 
 class AnimationBase extends BaseDemo {
@@ -11,17 +15,17 @@ class AnimationBase extends BaseDemo {
         super();
 
         this._resources.push(
-            "/resource/progress_bar/progress_bar_ske.json",
-            "/resource/progress_bar/progress_bar_tex.json",
-            "/resource/progress_bar/progress_bar_tex.png"
+            skeJson,
+            texJson,
+            texPng
         );
     }
 
     protected _onStart(): void {
         const factory = PixiFactory.factory;
         //console.log(this._pixiResources)
-        factory.parseDragonBonesData(this._pixiResources["/resource/progress_bar/progress_bar_ske.json"].data);
-        factory.parseTextureAtlasData(this._pixiResources["/resource/progress_bar/progress_bar_tex.json"].data, this._pixiResources["/resource/progress_bar/progress_bar_tex.png"].texture);
+        factory.parseDragonBonesData(this._pixiResources[skeJson].data);
+        factory.parseTextureAtlasData(this._pixiResources[texJson].data, this._pixiResources[texPng].texture);
         //
         this._armatureDisplay = factory.buildArmatureDisplay("progress_bar");
 

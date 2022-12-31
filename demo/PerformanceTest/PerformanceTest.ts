@@ -3,6 +3,10 @@ import { BaseObject, } from "@flyskypie/dragonbones-js";
 
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
 
+import mechaSkeJson from '../resource/mecha_1406/mecha_1406_ske.json?url';
+import mechaTexJson from '../resource/mecha_1406/mecha_1406_tex.json?url';
+import mechaTexPng from '../resource/mecha_1406/mecha_1406_tex.png';
+
 import { BaseDemo } from "../BaseDemo";
 
 class PerformanceTest extends BaseDemo {
@@ -15,9 +19,9 @@ class PerformanceTest extends BaseDemo {
         super();
 
         this._resources.push(
-            "/resource/mecha_1406/mecha_1406_ske.dbbin",
-            "/resource/mecha_1406/mecha_1406_tex.json",
-            "/resource/mecha_1406/mecha_1406_tex.png"
+            mechaSkeJson,
+            mechaTexJson,
+            mechaTexPng
         );
     }
 
@@ -79,8 +83,8 @@ class PerformanceTest extends BaseDemo {
     private _addArmature(): void {
         const factory = PixiFactory.factory;
         if (this._armatures.length === 0) {
-            factory.parseDragonBonesData(this._pixiResources["/resource/mecha_1406/mecha_1406_ske.dbbin"].data);
-            factory.parseTextureAtlasData(this._pixiResources["/resource/mecha_1406/mecha_1406_tex.json"].data, this._pixiResources["/resource/mecha_1406/mecha_1406_tex.png"].texture);
+            factory.parseDragonBonesData(this._pixiResources[mechaSkeJson].data);
+            factory.parseTextureAtlasData(this._pixiResources[mechaTexJson].data, this._pixiResources[mechaTexPng].texture);
         }
 
         const armatureDisplay = PixiFactory.factory.buildArmatureDisplay("mecha_1406");

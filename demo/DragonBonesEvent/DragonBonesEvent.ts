@@ -2,6 +2,10 @@ import { EventObject } from "@flyskypie/dragonbones-js";
 
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
 
+import mechaSkeJson from '../resource/mecha_1004d/mecha_1004d_ske.json?url';
+import mechaTexJson from '../resource/mecha_1004d/mecha_1004d_tex.json?url';
+import mechaTexPng from '../resource/mecha_1004d/mecha_1004d_tex.png';
+
 import { BaseDemo } from "../BaseDemo";
 
 class DragonBonesEvent extends BaseDemo {
@@ -11,16 +15,16 @@ class DragonBonesEvent extends BaseDemo {
         super();
 
         this._resources.push(
-            "/resource/mecha_1004d/mecha_1004d_ske.json",
-            "/resource/mecha_1004d/mecha_1004d_tex.json",
-            "/resource/mecha_1004d/mecha_1004d_tex.png"
+            mechaSkeJson,
+            mechaTexJson,
+            mechaTexPng
         );
     }
 
     protected _onStart(): void {
         const factory = PixiFactory.factory;
-        factory.parseDragonBonesData(this._pixiResources["/resource/mecha_1004d/mecha_1004d_ske.json"].data);
-        factory.parseTextureAtlasData(this._pixiResources["/resource/mecha_1004d/mecha_1004d_tex.json"].data, this._pixiResources["/resource/mecha_1004d/mecha_1004d_tex.png"].texture);
+        factory.parseDragonBonesData(this._pixiResources[mechaSkeJson].data);
+        factory.parseTextureAtlasData(this._pixiResources[mechaTexJson].data, this._pixiResources[mechaTexPng].texture);
         factory.soundEventManager.on(EventObject.SOUND_EVENT, this._soundEventHandler, this);
 
         this._armatureDisplay = factory.buildArmatureDisplay("mecha_1004d");

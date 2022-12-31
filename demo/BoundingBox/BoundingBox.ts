@@ -3,6 +3,13 @@ import { Bone, OffsetMode } from "@flyskypie/dragonbones-js";
 
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
 
+import mechaSkeJson from '../resource/mecha_2903/mecha_2903_ske.json?url';
+import mechaTexJson from '../resource/mecha_2903/mecha_2903_tex.json?url';
+import mechaTexPng from '../resource/mecha_2903/mecha_2903_tex.png';
+import boundingSkeJson from '../resource/bounding_box_tester/bounding_box_tester_ske.json?url';
+import boundingTexJson from '../resource/bounding_box_tester/bounding_box_tester_tex.json?url';
+import boundingTexPng from '../resource/bounding_box_tester/bounding_box_tester_tex.png';
+
 import { BaseDemo } from "../BaseDemo";
 import { DragHelper } from "../DragHelper";
 
@@ -23,12 +30,12 @@ class BoundingBox extends BaseDemo {
         super();
 
         this._resources.push(
-            "/resource/mecha_2903/mecha_2903_ske.json",
-            "/resource/mecha_2903/mecha_2903_tex.json",
-            "/resource/mecha_2903/mecha_2903_tex.png",
-            "/resource/bounding_box_tester/bounding_box_tester_ske.json",
-            "/resource/bounding_box_tester/bounding_box_tester_tex.json",
-            "/resource/bounding_box_tester/bounding_box_tester_tex.png"
+            mechaSkeJson,
+            mechaTexJson,
+            mechaTexPng,
+            boundingSkeJson,
+            boundingTexJson,
+            boundingTexPng
         );
     }
 
@@ -37,10 +44,10 @@ class BoundingBox extends BaseDemo {
         PIXI.ticker.shared.add(this._enterFrameHandler, this);
         //
         const factory = PixiFactory.factory;
-        factory.parseDragonBonesData(this._pixiResources["/resource/mecha_2903/mecha_2903_ske.json"].data);
-        factory.parseTextureAtlasData(this._pixiResources["/resource/mecha_2903/mecha_2903_tex.json"].data, this._pixiResources["/resource/mecha_2903/mecha_2903_tex.png"].texture);
-        factory.parseDragonBonesData(this._pixiResources["/resource/bounding_box_tester/bounding_box_tester_ske.json"].data);
-        factory.parseTextureAtlasData(this._pixiResources["/resource/bounding_box_tester/bounding_box_tester_tex.json"].data, this._pixiResources["/resource/bounding_box_tester/bounding_box_tester_tex.png"].texture);
+        factory.parseDragonBonesData(this._pixiResources[mechaSkeJson].data);
+        factory.parseTextureAtlasData(this._pixiResources[mechaTexJson].data, this._pixiResources[mechaTexPng].texture);
+        factory.parseDragonBonesData(this._pixiResources[boundingSkeJson].data);
+        factory.parseTextureAtlasData(this._pixiResources[boundingTexJson].data, this._pixiResources[boundingTexPng].texture);
         //
         this._armatureDisplay = factory.buildArmatureDisplay("mecha_2903d");
         this._boundingBoxTester = factory.buildArmatureDisplay("tester");

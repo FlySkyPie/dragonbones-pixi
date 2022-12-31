@@ -1,6 +1,12 @@
 import * as PIXI from 'pixi.js'
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
 
+import shizukuSkeJson from '../resource/shizuku/shizuku_ske.json?url';
+import shizukuTex00Png from '../resource/shizuku/shizuku.1024/texture_00.png';
+import shizukuTex01Png from '../resource/shizuku/shizuku.1024/texture_01.png';
+import shizukuTex02Png from '../resource/shizuku/shizuku.1024/texture_02.png';
+import shizukuTex03Png from '../resource/shizuku/shizuku.1024/texture_03.png';
+
 import { BaseDemo } from "../BaseDemo";
 
 class EyeTracking extends BaseDemo {
@@ -26,23 +32,23 @@ class EyeTracking extends BaseDemo {
         super();
 
         this._resources.push(
-            "/resource/shizuku/shizuku_ske.json",
-            "/resource/shizuku/shizuku.1024/texture_00.png",
-            "/resource/shizuku/shizuku.1024/texture_01.png",
-            "/resource/shizuku/shizuku.1024/texture_02.png",
-            "/resource/shizuku/shizuku.1024/texture_03.png",
+            shizukuSkeJson,
+            shizukuTex00Png,
+            shizukuTex01Png,
+            shizukuTex02Png,
+            shizukuTex03Png,
         );
     }
 
     protected _onStart(): void {
         const factory = PixiFactory.factory;
-        factory.parseDragonBonesData(this._pixiResources["/resource/shizuku/shizuku_ske.json"].data, "shizuku");
+        factory.parseDragonBonesData(this._pixiResources[shizukuSkeJson].data, "shizuku");
         factory.updateTextureAtlases(
             [
-                this._pixiResources["/resource/shizuku/shizuku.1024/texture_00.png"].texture,
-                this._pixiResources["/resource/shizuku/shizuku.1024/texture_01.png"].texture,
-                this._pixiResources["/resource/shizuku/shizuku.1024/texture_02.png"].texture,
-                this._pixiResources["/resource/shizuku/shizuku.1024/texture_03.png"].texture,
+                this._pixiResources[shizukuTex00Png].texture,
+                this._pixiResources[shizukuTex01Png].texture,
+                this._pixiResources[shizukuTex02Png].texture,
+                this._pixiResources[shizukuTex03Png].texture,
             ],
             "shizuku"
         );

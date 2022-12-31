@@ -38,6 +38,7 @@ export default defineConfig(({ command, mode }) => {
     }, {})
 
     return {
+      base: '',
       resolve: {
         alias: {
           "@dragonbones-pixi": path.resolve(__dirname, "./src"),

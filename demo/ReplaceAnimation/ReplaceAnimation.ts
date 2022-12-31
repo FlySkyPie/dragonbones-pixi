@@ -1,5 +1,9 @@
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
 
+import mechaSkeJson from '../resource/mecha_2903/mecha_2903_ske.json?url';
+import mechaTexJson from '../resource/mecha_2903/mecha_2903_tex.json?url';
+import mechaTexPng from '../resource/mecha_2903/mecha_2903_tex.png';
+
 import { BaseDemo } from "../BaseDemo";
 
 class ReplaceAnimation extends BaseDemo {
@@ -12,16 +16,16 @@ class ReplaceAnimation extends BaseDemo {
         super();
 
         this._resources.push(
-            "/resource/mecha_2903/mecha_2903_ske.json",
-            "/resource/mecha_2903/mecha_2903_tex.json",
-            "/resource/mecha_2903/mecha_2903_tex.png"
+            mechaSkeJson,
+            mechaTexJson,
+            mechaTexPng
         );
     }
 
     protected _onStart(): void {
         const factory = PixiFactory.factory;
-        factory.parseDragonBonesData(this._pixiResources["/resource/mecha_2903/mecha_2903_ske.json"].data);
-        factory.parseTextureAtlasData(this._pixiResources["/resource/mecha_2903/mecha_2903_tex.json"].data, this._pixiResources["/resource/mecha_2903/mecha_2903_tex.png"].texture);
+        factory.parseDragonBonesData(this._pixiResources[mechaSkeJson].data);
+        factory.parseTextureAtlasData(this._pixiResources[mechaTexJson].data, this._pixiResources[mechaTexPng].texture);
 
         this._armatureDisplayA = factory.buildArmatureDisplay("mecha_2903");
         this._armatureDisplayB = factory.buildArmatureDisplay("mecha_2903b");

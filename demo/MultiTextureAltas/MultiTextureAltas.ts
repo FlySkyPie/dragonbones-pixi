@@ -2,6 +2,12 @@ import * as PIXI from 'pixi.js'
 
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
 
+import effectSkeJson from '../resource/effect/effect_ske.json?url';
+import effectTexJson from '../resource/effect/effect_tex.json?url';
+import effectTexPng from '../resource/effect/effect_tex.png';
+import effectSdTexJson from '../resource/effect/effect_sd_tex.json?url';
+import effectSdTexPng from '../resource/effect/effect_sd_tex.png';
+
 import { BaseDemo } from "../BaseDemo";
 
 class MultiTextureAltas extends BaseDemo {
@@ -14,20 +20,20 @@ class MultiTextureAltas extends BaseDemo {
         super();
 
         this._resources.push(
-            "/resource/effect/effect_ske.json",
-            "/resource/effect/effect_tex.json",
-            "/resource/effect/effect_tex.png",
-            "/resource/effect/effect_sd_tex.json",
-            "/resource/effect/effect_sd_tex.png"
+            effectSkeJson,
+            effectTexJson,
+            effectTexPng,
+            effectSdTexJson,
+            effectSdTexPng
         );
     }
 
     protected _onStart(): void {
         const factory = PixiFactory.factory;
-        factory.parseDragonBonesData(this._pixiResources["/resource/effect/effect_ske.json"].data, "hd", 1.0);
-        factory.parseDragonBonesData(this._pixiResources["/resource/effect/effect_ske.json"].data, "sd", 0.5);
-        factory.parseTextureAtlasData(this._pixiResources["/resource/effect/effect_tex.json"].data, this._pixiResources["/resource/effect/effect_tex.png"].texture, "hd", 1.0);
-        factory.parseTextureAtlasData(this._pixiResources["/resource/effect/effect_sd_tex.json"].data, this._pixiResources["/resource/effect/effect_sd_tex.png"].texture, "sd", 2.0);
+        factory.parseDragonBonesData(this._pixiResources[effectSkeJson].data, "hd", 1.0);
+        factory.parseDragonBonesData(this._pixiResources[effectSkeJson].data, "sd", 0.5);
+        factory.parseTextureAtlasData(this._pixiResources[effectTexJson].data, this._pixiResources[effectTexPng].texture, "hd", 1.0);
+        factory.parseTextureAtlasData(this._pixiResources[effectSdTexJson].data, this._pixiResources[effectSdTexPng].texture, "sd", 2.0);
 
         this._armatureDisplayA = factory.buildArmatureDisplay("flower", "hd", undefined, "hd"); // HD Armature and HD TextureAtlas.
         this._armatureDisplayB = factory.buildArmatureDisplay("flower", "hd", undefined, "sd"); // HD Armature and SD TextureAtlas.

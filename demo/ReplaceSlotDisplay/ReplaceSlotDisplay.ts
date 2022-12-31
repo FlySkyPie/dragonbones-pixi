@@ -1,6 +1,13 @@
 import * as PIXI from 'pixi.js'
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
 
+import mechaSkeJson from '../resource/mecha_1004d_show/mecha_1004d_show_ske.json?url';
+import mechaTexJson from '../resource/mecha_1004d_show/mecha_1004d_show_tex.json?url';
+import mechaTexPng from '../resource/mecha_1004d_show/mecha_1004d_show_tex.png';
+import weaponSkeJson from '../resource/weapon_1004_show/weapon_1004_show_ske.json?url';
+import weaponTexJson from '../resource/weapon_1004_show/weapon_1004_show_tex.json?url';
+import weaponTexPng from '../resource/weapon_1004_show/weapon_1004_show_tex.png';
+
 import { BaseDemo } from "../BaseDemo";
 
 class ReplaceSlotDisplay extends BaseDemo {
@@ -16,20 +23,20 @@ class ReplaceSlotDisplay extends BaseDemo {
         super();
 
         this._resources.push(
-            "/resource/mecha_1004d_show/mecha_1004d_show_ske.json",
-            "/resource/mecha_1004d_show/mecha_1004d_show_tex.json",
-            "/resource/mecha_1004d_show/mecha_1004d_show_tex.png",
-            "/resource/weapon_1004_show/weapon_1004_show_ske.json",
-            "/resource/weapon_1004_show/weapon_1004_show_tex.json",
-            "/resource/weapon_1004_show/weapon_1004_show_tex.png"
+            mechaSkeJson,
+            mechaTexJson,
+            mechaTexPng,
+            weaponSkeJson,
+            weaponTexJson,
+            weaponTexPng
         );
     }
 
     protected _onStart(): void {
-        this._factory.parseDragonBonesData(this._pixiResources["/resource/mecha_1004d_show/mecha_1004d_show_ske.json"].data);
-        this._factory.parseTextureAtlasData(this._pixiResources["/resource/mecha_1004d_show/mecha_1004d_show_tex.json"].data, this._pixiResources["/resource/mecha_1004d_show/mecha_1004d_show_tex.png"].texture);
-        this._factory.parseDragonBonesData(this._pixiResources["/resource/weapon_1004_show/weapon_1004_show_ske.json"].data);
-        this._factory.parseTextureAtlasData(this._pixiResources["/resource/weapon_1004_show/weapon_1004_show_tex.json"].data, this._pixiResources["/resource/weapon_1004_show/weapon_1004_show_tex.png"].texture);
+        this._factory.parseDragonBonesData(this._pixiResources[mechaSkeJson].data);
+        this._factory.parseTextureAtlasData(this._pixiResources[mechaTexJson].data, this._pixiResources[mechaTexPng].texture);
+        this._factory.parseDragonBonesData(this._pixiResources[weaponSkeJson].data);
+        this._factory.parseTextureAtlasData(this._pixiResources[weaponTexJson].data, this._pixiResources[weaponTexPng].texture);
         //
         this._armatureDisplay = this._factory.buildArmatureDisplay("mecha_1004d");
 

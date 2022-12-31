@@ -2,6 +2,10 @@ import { EventObject } from "@flyskypie/dragonbones-js";
 
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
 
+import skeJson from '../resource/bullet_01/bullet_01_ske.json?url';
+import texJson from '../resource/bullet_01/bullet_01_tex.json?url';
+import texPng from '../resource/bullet_01/bullet_01_tex.png';
+
 import { BaseDemo } from "../BaseDemo";
 
 class BoneOffset extends BaseDemo {
@@ -9,16 +13,16 @@ class BoneOffset extends BaseDemo {
         super();
 
         this._resources.push(
-            "/resource/bullet_01/bullet_01_ske.json",
-            "/resource/bullet_01/bullet_01_tex.json",
-            "/resource/bullet_01/bullet_01_tex.png"
+            skeJson,
+            texJson,
+            texPng
         );
     }
 
     protected _onStart(): void {
         const factory = PixiFactory.factory;
-        factory.parseDragonBonesData(this._pixiResources["/resource/bullet_01/bullet_01_ske.json"].data);
-        factory.parseTextureAtlasData(this._pixiResources["/resource/bullet_01/bullet_01_tex.json"].data, this._pixiResources["/resource/bullet_01/bullet_01_tex.png"].texture);
+        factory.parseDragonBonesData(this._pixiResources[skeJson].data);
+        factory.parseTextureAtlasData(this._pixiResources[texJson].data, this._pixiResources[texPng].texture);
 
         for (let i = 0; i < 100; ++i) {
             const armatureDisplay = factory.buildArmatureDisplay("bullet_01");

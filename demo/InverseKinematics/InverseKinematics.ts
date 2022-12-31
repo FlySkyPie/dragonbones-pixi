@@ -3,6 +3,13 @@ import { AnimationState, Bone, Transform } from "@flyskypie/dragonbones-js";
 
 import { PixiArmatureDisplay, PixiFactory } from "@dragonbones-pixi";
 
+import mechaSkeJson from '../resource/mecha_1406/mecha_1406_ske.json?url';
+import mechaTexJson from '../resource/mecha_1406/mecha_1406_tex.json?url';
+import mechaTexPng from '../resource/mecha_1406/mecha_1406_tex.png';
+import floorSkeJson from '../resource/floor_board/floor_board_ske.json?url';
+import floorTexJson from '../resource/floor_board/floor_board_tex.json?url';
+import floorTexPng from '../resource/floor_board/floor_board_tex.png';
+
 import { BaseDemo } from "../BaseDemo";
 import { DragHelper } from '../DragHelper';
 
@@ -24,12 +31,12 @@ class InverseKinematics extends BaseDemo {
         super();
 
         this._resources.push(
-            "/resource/mecha_1406/mecha_1406_ske.json",
-            "/resource/mecha_1406/mecha_1406_tex.json",
-            "/resource/mecha_1406/mecha_1406_tex.png",
-            "/resource/floor_board/floor_board_ske.json",
-            "/resource/floor_board/floor_board_tex.json",
-            "/resource/floor_board/floor_board_tex.png"
+            mechaSkeJson,
+            mechaTexJson,
+            mechaTexPng,
+            floorSkeJson,
+            floorTexJson,
+            floorTexPng
         );
     }
 
@@ -45,10 +52,10 @@ class InverseKinematics extends BaseDemo {
         PIXI.ticker.shared.add(this._enterFrameHandler, this);
         //
         const factory = PixiFactory.factory;
-        factory.parseDragonBonesData(this._pixiResources["/resource/mecha_1406/mecha_1406_ske.json"].data);
-        factory.parseTextureAtlasData(this._pixiResources["/resource/mecha_1406/mecha_1406_tex.json"].data, this._pixiResources["/resource/mecha_1406/mecha_1406_tex.png"].texture);
-        factory.parseDragonBonesData(this._pixiResources["/resource/floor_board/floor_board_ske.json"].data);
-        factory.parseTextureAtlasData(this._pixiResources["/resource/floor_board/floor_board_tex.json"].data, this._pixiResources["/resource/floor_board/floor_board_tex.png"].texture);
+        factory.parseDragonBonesData(this._pixiResources[mechaSkeJson].data);
+        factory.parseTextureAtlasData(this._pixiResources[mechaTexJson].data, this._pixiResources[mechaTexPng].texture);
+        factory.parseDragonBonesData(this._pixiResources[floorSkeJson].data);
+        factory.parseTextureAtlasData(this._pixiResources[floorTexJson].data, this._pixiResources[floorTexPng].texture);
         //
         this._armatureDisplay = factory.buildArmatureDisplay("mecha_1406");
         this._floorBoard = factory.buildArmatureDisplay("floor_board");
